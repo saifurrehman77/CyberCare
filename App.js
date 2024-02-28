@@ -4,8 +4,8 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import HomeScreen from './HomeScreen'; // Adjust the import statement
 import RegisterScreen from  './RegisterScreen';
-import fbdataScreen from './fbdataScreen';
-
+import FbdataScreen from './FacebookData';
+import DashboardScreen from './DashboardScreen';
 const Stack = createNativeStackNavigator();
 
 const App = () => {
@@ -14,7 +14,8 @@ const App = () => {
       <Stack.Navigator initialRouteName="Home">
         <Stack.Screen name="Home" component={HomeScreen} />
         <Stack.Screen name="Register" component={RegisterScreen} />
-        <Stack.Screen name="fbData" component={fbdataScreen} />
+        <Stack.Screen name="fbData" component={FbdataScreen} />
+        <Stack.Screen name="Dashboard" component={DashboardScreen} />
 
       </Stack.Navigator>
     </NavigationContainer>
