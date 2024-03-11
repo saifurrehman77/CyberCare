@@ -6,6 +6,7 @@ import HomeScreen from './HomeScreen'; // Adjust the import statement
 import RegisterScreen from  './RegisterScreen';
 import FbdataScreen from './FacebookData';
 import DashboardScreen from './DashboardScreen';
+import TwitterConnectScreen from './TwitterConnectScreen';
 const Stack = createNativeStackNavigator();
 
 const App = () => {
@@ -16,6 +17,7 @@ const App = () => {
         <Stack.Screen name="Register" component={RegisterScreen} />
         <Stack.Screen name="fbData" component={FbdataScreen} />
         <Stack.Screen name="Dashboard" component={DashboardScreen} />
+        <Stack.Screen name="TwitterConnect" component={TwitterConnectScreen} />
 
       </Stack.Navigator>
     </NavigationContainer>

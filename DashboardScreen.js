@@ -1,13 +1,13 @@
-// import React, { useEffect } from 'react';
-// import { StyleSheet, ScrollView, SafeAreaView, TouchableOpacity } from 'react-native';
-// import { getAuth, signOut, } from  '@react-native-firebase/auth';
-// import { useNavigation } from '@react-navigation/native';
-// import { Avatar, Card, Title, Paragraph, Button, List, Appbar} from 'react-native-paper';
+import React, { useEffect } from 'react';
+import { StyleSheet, ScrollView, SafeAreaView, TouchableOpacity } from 'react-native';
+import { getAuth, signOut, } from  '@react-native-firebase/auth';
+import { useNavigation } from '@react-navigation/native';
+import { Avatar, Card, Title, Paragraph, Button, List, Appbar} from 'react-native-paper';
 
 
-// const DashboardScreen = () => {
-//   const auth = getAuth();
-//   const navigation = useNavigation();
+const DashboardScreen = () => {
+  const auth = getAuth();
+  const navigation = useNavigation();
   
 
 
@@ -15,134 +15,138 @@
 
   
 
-//   const handleLogout = async () => {
-//     try {
-//       await signOut(auth);
-//       navigation.reset({
-//         index: 0,
-//         routes: [{ name: 'Home' }],
-//       });
-//     } catch (error) {
-//       console.error('Error signing out:', error);
-//     }
-//   };
+  const handleLogout = async () => {
+    try {
+      await signOut(auth);
+      navigation.reset({
+        index: 0,
+        routes: [{ name: 'Home' }],
+      });
+    } catch (error) {
+      console.error('Error signing out:', error);
+    }
+  };
 
-//   const handleSocialMediaConnect = (platform) => {
-//     if (platform === 'Facebook') {
-//       promptAsync();
-//     } else {
-//       // Placeholder for other social media platforms
-//       console.log(`Connect to ${platform}`);
-//     }
-//   };
+  const handleSocialMediaConnect = (platform) => {
+    if (platform === 'Facebook') {
+      // Existing logic for Facebook
+      promptAsync();
+    } else if (platform === 'Twitter') {
+      // Navigate to TwitterConnectScreen
+      navigation.navigate('TwitterConnect');
+    } else {
+      // Placeholder for other social media platforms
+      console.log(`Connect to ${platform}`);
+    }
+  };
 
-//   const handleProfilePress = () => {
-//     console.log("Profile Button Pressed");
-//     navigation.navigate('ProfileSettings');
-//   };
+  const handleProfilePress = () => {
+    console.log("Profile Button Pressed");
+    navigation.navigate('ProfileSettings');
+  };
 
-//   return (
-//     <SafeAreaView style={styles.container}>
-//       <Appbar.Header style={styles.appbar}>
-//         <Appbar.Content title="Dashboard" style={styles.appbarTitle} />
-//         <TouchableOpacity onPress={handleProfilePress}>
-//           <Avatar.Icon 
-//             size={40} 
-//             icon="account-circle" 
-//             style={styles.profileIcon} 
-//           />
-//         </TouchableOpacity>
-//       </Appbar.Header>
+  return (
+    <SafeAreaView style={styles.container}>
+      <Appbar.Header style={styles.appbar}>
+        <Appbar.Content title="Dashboard" style={styles.appbarTitle} />
+        <TouchableOpacity onPress={handleProfilePress}>
+          <Avatar.Icon 
+            size={40} 
+            icon="account-circle" 
+            style={styles.profileIcon} 
+          />
+        </TouchableOpacity>
+      </Appbar.Header>
 
-//       <ScrollView style={styles.content}>
-//         <Card style={styles.card}>
-//           <Card.Title 
-//             title="User Profile" 
-//             left={(props) => (
-//               <Avatar.Icon 
-//                 {...props} 
-//                 icon="account" 
-//                 style={{ backgroundColor: '#eef9f0' }}
-//                 color="#5E8D93"
-//               />
-//             )} 
-//           />
-//           <Card.Content>
-//             <Title>Saif ur Rehman</Title>
-//             <Paragraph>Software Engineer</Paragraph>
-//           </Card.Content>
-//         </Card>
+      <ScrollView style={styles.content}>
+        <Card style={styles.card}>
+          <Card.Title 
+            title="User Profile" 
+            left={(props) => (
+              <Avatar.Icon 
+                {...props} 
+                icon="account" 
+                style={{ backgroundColor: '#eef9f0' }}
+                color="#5E8D93"
+              />
+            )} 
+          />
+          <Card.Content>
+            <Title>Saif ur Rehman</Title>
+            <Paragraph>Software Engineer</Paragraph>
+          </Card.Content>
+        </Card>
 
-//         <Card style={styles.card}>
-//           <Card.Title title="Connect to Social Media" />
-//           <Card.Content>
-//             <TouchableOpacity onPress={() => handleSocialMediaConnect('Facebook')}>
-//               <List.Item
-//                 title="Connect to Facebook"
-//                 left={() => <List.Icon color="#4267B2" icon="facebook" />}
-//               />
-//             </TouchableOpacity>
-//             <TouchableOpacity onPress={() => handleSocialMediaConnect('Twitter')}>
-//               <List.Item
-//                 title="Connect to Twitter"
-//                 left={() => <List.Icon color="#1DA1F2" icon="twitter" />}
-//               />
-//             </TouchableOpacity>
-//             <TouchableOpacity onPress={() => handleSocialMediaConnect('Reddit')}>
-//               <List.Item
-//                 title="Connect to Reddit"
-//                 left={() => <List.Icon color="#FF5700" icon="reddit" />}
-//               />
-//             </TouchableOpacity>
-//           </Card.Content>
-//         </Card>
+        <Card style={styles.card}>
+          <Card.Title title="Connect to Social Media" />
+          <Card.Content>
+            <TouchableOpacity onPress={() => handleSocialMediaConnect('Facebook')}>
+              <List.Item
+                title="Connect to Facebook"
+                left={() => <List.Icon color="#4267B2" icon="facebook" />}
+              />
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => handleSocialMediaConnect('Twitter')}>
+              <List.Item
+                title="Connect to Twitter"
+                left={() => <List.Icon color="#1DA1F2" icon="twitter" />}
+              />
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => handleSocialMediaConnect('Reddit')}>
+              <List.Item
+                title="Connect to Reddit"
+                left={() => <List.Icon color="#FF5700" icon="reddit" />}
+              />
+            </TouchableOpacity>
+          </Card.Content>
+        </Card>
 
-//         <Button icon="logout" mode="contained" onPress={handleLogout} style={styles.button} color="#eef9f0">
-//           Logout
-//         </Button>
-//       </ScrollView>
-//     </SafeAreaView>
-//   );
-// };
+        <Button icon="logout" mode="contained" onPress={handleLogout} style={styles.button} color="#eef9f0">
+          Logout
+        </Button>
+      </ScrollView>
+    </SafeAreaView>
+  );
+};
 
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     backgroundColor: '#eef9f0',
-//   },
-//   appbar: {
-//     backgroundColor: '#eef9f0', 
-//     elevation: 0, 
-//   },
-//   appbarTitle: {
-//     color: '#5E8D93',
-//     fontWeight: 'bold',
-//   },
-//   profileIcon: {
-//     backgroundColor: '#eef9f0', 
-//     color: '#5E8D93', 
-//     marginRight: 10,
-//   },
-//   content: {
-//     padding: 20,
-//   },
-//   card: {
-//     backgroundColor: 'white',
-//     marginVertical: 10,
-//     elevation: 4,
-//     borderRadius: 8,
-//   },
-//   button: {
-//     backgroundColor: '#5E8D93',
-//     borderRadius: 25,
-//     marginVertical: 10,
-//     paddingVertical: 10,
-//     elevation: 4,
-//   },
-//   // ... other styles ...
-// });
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#eef9f0',
+  },
+  appbar: {
+    backgroundColor: '#eef9f0', 
+    elevation: 0, 
+  },
+  appbarTitle: {
+    color: '#5E8D93',
+    fontWeight: 'bold',
+  },
+  profileIcon: {
+    backgroundColor: '#eef9f0', 
+    color: '#5E8D93', 
+    marginRight: 10,
+  },
+  content: {
+    padding: 20,
+  },
+  card: {
+    backgroundColor: 'white',
+    marginVertical: 10,
+    elevation: 4,
+    borderRadius: 8,
+  },
+  button: {
+    backgroundColor: '#5E8D93',
+    borderRadius: 25,
+    marginVertical: 10,
+    paddingVertical: 10,
+    elevation: 4,
+  },
+  // ... other styles ...
+});
 
-// export default DashboardScreen;
+export default DashboardScreen;
 
 
 // import React, { useState, useEffect } from 'react';
@@ -682,169 +686,170 @@
 
 // export default DashboardScreen;
 
-import React, { useState, useEffect } from 'react';
-import { View, Text, Image, StyleSheet, ScrollView, SafeAreaView, TouchableOpacity } from 'react-native';
-import { Card, Title, Paragraph, Button, List, Avatar, Appbar } from 'react-native-paper';
-import { AccessToken, GraphRequest, GraphRequestManager, LoginManager } from 'react-native-fbsdk-next';
-import auth from '@react-native-firebase/auth';
+// import React, { useState, useEffect } from 'react';
+// import { View, Text, Image, StyleSheet, ScrollView, SafeAreaView, TouchableOpacity } from 'react-native';
+// import { Card, Title, Paragraph, Button, List, Avatar, Appbar } from 'react-native-paper';
+// import { AccessToken, GraphRequest, GraphRequestManager, LoginManager } from 'react-native-fbsdk-next';
+// import auth from '@react-native-firebase/auth';
+// import { red100 } from 'react-native-paper/lib/typescript/styles/themes/v2/colors';
 
-const DashboardScreen = () => {
-  const [userData, setUserData] = useState(null);
-  const [userPosts, setUserPosts] = useState([]);
-  const [modelResults, setModelResults] = useState(null);
+// const DashboardScreen = () => {
+//   const [userData, setUserData] = useState(null);
+//   const [userPosts, setUserPosts] = useState([]);
+//   const [modelResults, setModelResults] = useState(null);
 
-  useEffect(() => {
-    const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
-    return subscriber; // unsubscribe on unmount
-  }, []);
+//   useEffect(() => {
+//     const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
+//     return subscriber; // unsubscribe on unmount
+//   }, []);
 
-  const onAuthStateChanged = (user) => {
-    setUserData(user);
-    if (user) {
-      // Perform Facebook Login to fetch data
-      handleFacebookLogin();
-    }
-  };
+//   const onAuthStateChanged = (user) => {
+//     setUserData(user);
+//     if (user) {
+//       // Perform Facebook Login to fetch data
+//       handleFacebookLogin();
+//     }
+//   };
 
-  const handleFacebookLogin = async () => {
-    try {
-      const result = await LoginManager.logInWithPermissions(['public_profile', 'email', 'user_posts']);
-      if (result.isCancelled) {
-        throw new Error('User cancelled the login process');
-      }
-      const data = await AccessToken.getCurrentAccessToken();
-      if (!data) {
-        throw new Error('Something went wrong obtaining access token');
-      }
-      // Fetch user data from Facebook
-      fetchUserData(data.accessToken.toString());
-      // Fetch user posts from Facebook
-      fetchUserPosts(data.accessToken.toString());
-    } catch (error) {
-      console.error('Facebook Login Error: ', error);
-    }
-  };
+//   const handleFacebookLogin = async () => {
+//     try {
+//       const result = await LoginManager.logInWithPermissions(['public_profile', 'email', 'user_posts']);
+//       if (result.isCancelled) {
+//         throw new Error('User cancelled the login process');
+//       }
+//       const data = await AccessToken.getCurrentAccessToken();
+//       if (!data) {
+//         throw new Error('Something went wrong obtaining access token');
+//       }
+//       // Fetch user data from Facebook
+//       fetchUserData(data.accessToken.toString());
+//       // Fetch user posts from Facebook
+//       fetchUserPosts(data.accessToken.toString());
+//     } catch (error) {
+//       console.error('Facebook Login Error: ', error);
+//     }
+//   };
 
-  const fetchUserData = (accessToken) => {
-    const request = new GraphRequest(
-      '/me',
-      {
-        accessToken: accessToken,
-        parameters: {
-          fields: {
-            string: 'id,name,email,picture.type(large)' // Fetches user ID, name, email, and large profile picture
-          }
-        }
-      },
-      (error, result) => {
-        if (error) {
-          console.error('Error fetching user data:', error);
-        } else {
-          setUserData(result);
-        }
-      }
-    );
-    new GraphRequestManager().addRequest(request).start();
-  };
+//   const fetchUserData = (accessToken) => {
+//     const request = new GraphRequest(
+//       '/me',
+//       {
+//         accessToken: accessToken,
+//         parameters: {
+//           fields: {
+//             string: 'id,name,email,picture.type(large)' // Fetches user ID, name, email, and large profile picture
+//           }
+//         }
+//       },
+//       (error, result) => {
+//         if (error) {
+//           console.error('Error fetching user data:', error);
+//         } else {
+//           setUserData(result);
+//         }
+//       }
+//     );
+//     new GraphRequestManager().addRequest(request).start();
+//   };
 
-  const fetchUserPosts = (accessToken) => {
-    const request = new GraphRequest(
-      '/me/posts',
-      {
-        accessToken,
-        parameters: {
-          fields: {
-            string: 'message,created_time' // Adjust based on the data you need
-          }
-        }
-      },
-      (error, result) => {
-        if (error) {
-          console.error('Error fetching posts: ', error);
-        } else {
-          setUserPosts(result.data);
-          // Example: Sending first post's message to the model
-          const messages = result.data.map(post => post.message).filter(Boolean);
-          sendDataToModel(messages);
-        }
-      }
-    );
-    new GraphRequestManager().addRequest(request).start();
-  };
+//   const fetchUserPosts = (accessToken) => {
+//     const request = new GraphRequest(
+//       '/me/posts',
+//       {
+//         accessToken,
+//         parameters: {
+//           fields: {
+//             string: 'message,created_time' // Adjust based on the data you need
+//           }
+//         }
+//       },
+//       (error, result) => {
+//         if (error) {
+//           console.error('Error fetching posts: ', error);
+//         } else {
+//           setUserPosts(result.data);
+//           // Example: Sending first post's message to the model
+//           const messages = result.data.map(post => post.message).filter(Boolean);
+//           sendDataToModel(messages);
+//         }
+//       }
+//     );
+//     new GraphRequestManager().addRequest(request).start();
+//   };
 
-  const sendDataToModel = async (messages) => {
-    const modelEndpoint = 'http://127.0.0.1:8000/predict'; // Replace with your actual endpoint
-    try {
-      const response = await fetch(modelEndpoint, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ messages }),
-      });
-      const result = await response.json();
-      setModelResults(result); // Update the state with the model results
-    } catch (error) {
-      console.error('Error sending data to model:', error);
-    }
-  };
+//   const sendDataToModel = async (messages) => {
+//     const modelEndpoint = 'http://192.168.0.103:8000/predict'; // Replace with your actual endpoint
+//     console.log(messages)
+//     try {
+//       const response = await fetch(modelEndpoint, {
+//         method: 'POST',
+//         headers: {
+//           'Content-Type': 'application/json',
+//         },
+//         body: JSON.stringify({"comments": messages }),
+//       });
+//       const result = await response.json();
+//       setModelResults(result); // Update the state with the model results
+//     } catch (error) {
+//       console.error('Error sending data to model:', error);
+//     }
+//   };
 
-  const handleLogout = async () => {
-    try {
-      await auth().signOut();
-      LoginManager.logOut();
-      setUserData(null);
-      setUserPosts([]);
-      setModelResults(null);
-    } catch (error) {
-      console.error('Error signing out:', error);
-    }
-  };
+//   const handleLogout = async () => {
+//     try {
+//       await auth().signOut();
+//       LoginManager.logOut();
+//       setUserData(null);
+//       setUserPosts([]);
+//       setModelResults(null);
+//     } catch (error) {
+//       console.error('Error signing out:', error);
+//     }
+//   };
 
-  return (
-    <View style={styles.container}>
-  {userData ? (
-    <>
-      <Text>Welcome, {userData.name}</Text>
-      <Image source={{ uri: userData.picture?.data?.url }} style={styles.image} />
-      <Text>Email: {userData.email}</Text>
-      {modelResults && (
-        <View style={styles.resultsContainer}>
-          <Text>Model Analysis:</Text>
-          <Text>Positive: {modelResults.hatespeech}</Text>
-          <Text>Neutral: {modelResults.offensive}</Text>
-          <Text>Negative: {modelResults.neither}</Text>
-        </View>
-      )}
-    </>
-  ) : (
-    <Text>Loading...</Text>
-  )}
-</View>
-  );
-};
+//   return (
+//     <View style={styles.container}>
+//   {userData ? (
+//     <>
+//       <Text>Welcome, {userData.name}</Text>
+//       <Image source={{ uri: userData.picture?.data?.url }} style={styles.image} />
+//       <Text>Email: {userData.email}</Text>
+//       {modelResults && (
+//         <View style={styles.resultsContainer}>
+//           <Text>Model Analysis:</Text>
+//           <Text>The Speech Is: {modelResults[0].predicted_label}</Text>
+//         </View>
+//       )}
+//     </>
+//   ) : (
+//     <Text>Loading...</Text>
+//   )}
+// </View>
+//   );
+// };
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  image: {
-    width: 100,
-    height: 100,
-    borderRadius: 50,
-  },
-  resultsContainer: {
-    marginTop: 20,
-    alignItems: 'center',
-  },
-});
-
-
+// const styles = StyleSheet.create({
+//   container: {
+//     flex: 1,
+//     justifyContent: 'center',
+//     alignItems: 'center',
+//   },
+//   image: {
+//     width: 100,
+//     height: 100,
+//     borderRadius: 50,
+//   },
+//   resultsContainer: {
+//     marginTop: 20,
+//     alignItems: 'center',
+//     color:'#5E8D93' 
+//   },
+// });
 
 
-// Styles remain the same as your last DashboardScreen component
-// Include your StyleSheet here
 
-export default DashboardScreen;
+
+// // Styles remain the same as your last DashboardScreen component
+// // Include your StyleSheet here
+
+// export default DashboardScreen;

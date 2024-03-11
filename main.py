@@ -4,8 +4,24 @@ from transformers import BertTokenizer, BertForSequenceClassification
 import torch
 import numpy as np
 from typing import List
+from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
+
+allowed_origins = [
+    "http://localhost:8000",  # Allows requests from localhost:8000
+    "http://192.168.0.105:8000",  # Replace with your machine's local network IP and port
+    # Add other origins as needed
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=allowed_origins,
+    allow_credentials=True,
+    allow_methods=["*"],  # Allows all methods
+    allow_headers=["*"],  # Allows all headers
+)
+
 
 
 # Define the number of labels (adjust this according to your original model)
@@ -31,8 +47,10 @@ class InputData(BaseModel):
     comments: List[str]
 
 
-# @app.get("/predict"):
-#     print()
+@app.get("/")
+def read_root():
+    return {"message": "Hello World"}
+
 # Define the predict endpoint
 @app.post("/predict")
 def predict(data: InputData):
