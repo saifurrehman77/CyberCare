@@ -364,7 +364,7 @@ const RegisterScreen = ({ navigation }) => {
           secureTextEntry
           style={styles.input}
           underlineColor="#5E8D93"
-          theme={{ colors: { primary: '#5E8D93', underlineColor: 'transparent' } }}
+          theme={{ colors: { primary: '#3868D9', underlineColor: 'transparent' } }}
         />
         <Button
           mode="contained"
@@ -384,7 +384,7 @@ const RegisterScreen = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#eef9f0',
+    backgroundColor: '#ffffff',
   },
   logoContainer: {
     alignItems: 'center',
@@ -412,9 +412,9 @@ const styles = StyleSheet.create({
   button: {
     borderRadius: 50,
     paddingVertical: 2,
-    backgroundColor: '#5E8D93',
+    backgroundColor: '#3868D9',
     elevation: 4,
-    shadowColor: '#34495E',
+    shadowColor: '#3868D9',
     shadowOffset: {
       width: 0,
       height: 2,

@@ -4,9 +4,16 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import HomeScreen from './HomeScreen'; // Adjust the import statement
 import RegisterScreen from  './RegisterScreen';
-import FbdataScreen from './FacebookData';
 import DashboardScreen from './DashboardScreen';
 import TwitterConnectScreen from './TwitterConnectScreen';
+import MainDrawerNavigator from './MainDrawerNavigator';
+import FacebookConnectScreen from './FacebookConnectScreen';
+import FbContentMonitoringScreen from './FbContentMonitoringScreen';
+import ProfileSettings from './ProfileSettings';
+import ForgotPassword from './ForgotPassword';
+
+
+
 const Stack = createNativeStackNavigator();
 
 const App = () => {
@@ -15,10 +22,18 @@ const App = () => {
       <Stack.Navigator initialRouteName="Home">
         <Stack.Screen name="Home" component={HomeScreen} />
         <Stack.Screen name="Register" component={RegisterScreen} />
-        <Stack.Screen name="fbData" component={FbdataScreen} />
         <Stack.Screen name="Dashboard" component={DashboardScreen} />
         <Stack.Screen name="TwitterConnect" component={TwitterConnectScreen} />
+        <Stack.Screen name="FacebookConnect" component={FacebookConnectScreen} />
+        <Stack.Screen name="Content" component={FbContentMonitoringScreen} />
+        <Stack.Screen name="ProfileSettings" component={ProfileSettings} />
+        <Stack.Screen name="ForgotPassword" component={ForgotPassword} />
 
+        <Stack.Screen
+          name="ResultsDrawer" // This is the name used to navigate to the drawer navigator from the stack navigator
+          component={MainDrawerNavigator} // The component we created earlier
+          options={{ headerShown: false }} // Optional: Hide the stack header because the drawer navigator has its own
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );

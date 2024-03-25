@@ -1,113 +1,190 @@
-import React, { useEffect } from 'react';
-import { StyleSheet, ScrollView, SafeAreaView, TouchableOpacity } from 'react-native';
-import { getAuth, signOut, } from  '@react-native-firebase/auth';
-import { useNavigation } from '@react-navigation/native';
-import { Avatar, Card, Title, Paragraph, Button, List, Appbar} from 'react-native-paper';
+// import React, { useEffect } from 'react';
+// import { StyleSheet, ScrollView, SafeAreaView, TouchableOpacity } from 'react-native';
+// import { getAuth, signOut, } from  '@react-native-firebase/auth';
+// import { useNavigation } from '@react-navigation/native';
+// import { Avatar, Card, Title, Paragraph, Button, List, Appbar} from 'react-native-paper';
 
 
-const DashboardScreen = () => {
-  const auth = getAuth();
-  const navigation = useNavigation();
-  
+// const DashboardScreen = () => {
+//   const auth = getAuth();
+//   const navigation = useNavigation();
+
+// import React, { useEffect, useState } from 'react';
+// import { StyleSheet, ScrollView, SafeAreaView, TouchableOpacity, View, Text } from 'react-native';
+// //import { getAuth, signOut } from '@react-native-firebase/auth';
+// import { useNavigation } from '@react-navigation/native';
+// import { Avatar, Card, Button, List, Appbar } from 'react-native-paper';
+// import auth from '@react-native-firebase/auth';
+
+// // const DashboardScreen = () => {
+//   const navigation = useNavigation();
+//   const [userProfile, setUserProfile] = useState({ name: '', email: '' });
+//   const auth = getAuth();
+//   const navigation = useNavigation();
+//   const [userProfile, setUserProfile] = useState(null);
+
+//   useEffect(() => {
+//     const unsubscribeAuth = auth.onAuthStateChanged((user) => {
+//       if (user) {
+//         // Extract the user profile data here
+//         setUserProfile({
+//           name: user.displayName || 'No Name', // Fallback if displayName is not set
+//           email: user.email || 'No Email', // Fallback if email is not set
+//         });
+//       } else {
+//         // If not signed in, set user profile to null
+//         setUserProfile(null);
+//       }
+//     });
+
+//     // Unsubscribe from the auth listener when the component unmounts
+//     return () => unsubscribeAuth();
+//   }, [auth]);
 
 
 
 
-  
 
-  const handleLogout = async () => {
-    try {
-      await signOut(auth);
-      navigation.reset({
-        index: 0,
-        routes: [{ name: 'Home' }],
-      });
-    } catch (error) {
-      console.error('Error signing out:', error);
-    }
-  };
 
-  const handleSocialMediaConnect = (platform) => {
-    if (platform === 'Facebook') {
-      // Existing logic for Facebook
-      promptAsync();
-    } else if (platform === 'Twitter') {
-      // Navigate to TwitterConnectScreen
-      navigation.navigate('TwitterConnect');
-    } else {
-      // Placeholder for other social media platforms
-      console.log(`Connect to ${platform}`);
-    }
-  };
+//   const handleLogout = async () => {
+//     try {
+//       await signOut(auth);
+//       navigation.reset({
+//         index: 0,
+//         routes: [{ name: 'Home' }],
+//       });
+//     } catch (error) {
+//       console.error('Error signing out:', error);
+//     }
+//   };
+//         useEffect(() => {
+//           const unsubscribe = auth().onAuthStateChanged((user) => { // Use auth() directly
+//             if (user) {
+//               setUserProfile({
+//                 name: user.displayName || 'No Name',
+//                 email: user.email || 'No Email',
+//               });
+//             } else {
+//               setUserProfile({ name: '', email: '' });
+//             }
+//           });
 
-  const handleProfilePress = () => {
-    console.log("Profile Button Pressed");
-    navigation.navigate('ProfileSettings');
-  };
+//           return unsubscribe; // Return the unsubscribe function to clean up
+//         }, []);
 
-  return (
-    <SafeAreaView style={styles.container}>
-      <Appbar.Header style={styles.appbar}>
-        <Appbar.Content title="Dashboard" style={styles.appbarTitle} />
-        <TouchableOpacity onPress={handleProfilePress}>
-          <Avatar.Icon 
-            size={40} 
-            icon="account-circle" 
-            style={styles.profileIcon} 
-          />
-        </TouchableOpacity>
-      </Appbar.Header>
+//         const handleLogout = async () => {
+//           try {
+//             await auth().signOut(); // Use auth().signOut()
+//             navigation.reset({
+//               index: 0,
+//               routes: [{ name: 'Home' }],
+//             });
+//           } catch (error) {
+//             console.error('Error signing out:', error);
+//           }
+//         };
+// // Assuming you have a navigation prop
 
-      <ScrollView style={styles.content}>
-        <Card style={styles.card}>
-          <Card.Title 
-            title="User Profile" 
-            left={(props) => (
-              <Avatar.Icon 
-                {...props} 
-                icon="account" 
-                style={{ backgroundColor: '#eef9f0' }}
-                color="#5E8D93"
+//   const handleSocialMediaConnect = (platform) => {
+//     if (platform === 'Facebook') {
+//       LoginManager.logInWithPermissions(['public_profile']).then(
+//         function (result) {
+//           if (result.isCancelled) {
+//             console.log("Login cancelled");
+//           } else {
+//             AccessToken.getCurrentAccessToken().then(
+//               (data) => {
+//                 // Assuming you have a separate screen to handle Facebook data
+//                 navigation.navigate('FacebookConnect', { accessToken: data.accessToken });
+//               }
+//             );
+//           }
+//         },
+//         function (error) {
+//           console.log("Login fail with error: " + error);
+//         }
+//       );
+//     } else if (platform === 'Twitter') {
+//       // Navigate to TwitterConnectScreen
+//       navigation.navigate('TwitterConnect');
+//     } 
+//   };
+
+// const handleProfilePress = () => {
+//   console.log("Profile Button Pressed");
+//   navigation.navigate('ProfileSettings');
+// };
+
+//     return (
+//       <SafeAreaView style={styles.container}>
+//         <Appbar.Header style={styles.appbar}>
+//           <Appbar.Content title="Dashboard" style={styles.appbarTitle} />
+//           <TouchableOpacity onPress={handleProfilePress}>
+//             <Avatar.Icon 
+//               size={40} 
+//               icon="account-circle" 
+//               style={styles.profileIcon} 
+//             />
+//           </TouchableOpacity>
+//         </Appbar.Header>
+
+{/* <ScrollView style={styles.content}>
+            <Card style={styles.card}>
+              <Card.Title 
+                title="User Profile" 
+                left={(props) => (
+                  <Avatar.Icon 
+                    {...props} 
+                    icon="account" 
+                    style={{ backgroundColor: '#eef9f0' }}
+                    color="#5E8D93"
+                  />
+                )} 
               />
-            )} 
-          />
-          <Card.Content>
-            <Title>Saif ur Rehman</Title>
-            <Paragraph>Software Engineer</Paragraph>
-          </Card.Content>
-        </Card>
+              <Card.Content>
+                <Title>Saif ur Rehman</Title>
+                <Paragraph>Software Engineer</Paragraph>
+              </Card.Content>
+            </Card> */}
+{/* <ScrollView style={styles.content}>
+            {userProfile && (
+              <Card style={styles.card}>
+                <Card.Title title="User Profile" left={(props) => <Avatar.Icon {...props} icon="account" />} />
+                <Card.Content>
+                  <View style={styles.userInfo}>
+                    <Text style={styles.userName}>{userProfile.name}</Text>
+                    <Text style={styles.userEmail}>{userProfile.email}</Text>
+                  </View>
+                </Card.Content>
+              </Card>
+            )}
 
-        <Card style={styles.card}>
-          <Card.Title title="Connect to Social Media" />
-          <Card.Content>
-            <TouchableOpacity onPress={() => handleSocialMediaConnect('Facebook')}>
-              <List.Item
-                title="Connect to Facebook"
-                left={() => <List.Icon color="#4267B2" icon="facebook" />}
-              />
-            </TouchableOpacity>
-            <TouchableOpacity onPress={() => handleSocialMediaConnect('Twitter')}>
-              <List.Item
-                title="Connect to Twitter"
-                left={() => <List.Icon color="#1DA1F2" icon="twitter" />}
-              />
-            </TouchableOpacity>
-            <TouchableOpacity onPress={() => handleSocialMediaConnect('Reddit')}>
-              <List.Item
-                title="Connect to Reddit"
-                left={() => <List.Icon color="#FF5700" icon="reddit" />}
-              />
-            </TouchableOpacity>
-          </Card.Content>
-        </Card>
+            <Card style={styles.card}>
+              <Card.Title title="Connect to Social Media" />
+              <Card.Content>
+                <TouchableOpacity onPress={() => handleSocialMediaConnect('Facebook')}>
+                  <List.Item
+                    title="Connect to Facebook"
+                    left={() => <List.Icon color="#4267B2" icon="facebook" />}
+                  />
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => handleSocialMediaConnect('Twitter')}>
+                  <List.Item
+                    title="Connect to Twitter"
+                    left={() => <List.Icon color="#1DA1F2" icon="twitter" />}
+                  />
+                </TouchableOpacity>
 
-        <Button icon="logout" mode="contained" onPress={handleLogout} style={styles.button} color="#eef9f0">
-          Logout
-        </Button>
-      </ScrollView>
-    </SafeAreaView>
-  );
-};
+              </Card.Content>
+            </Card>
+
+            <Button icon="logout" mode="contained" onPress={handleLogout} style={styles.button} color="#eef9f0">
+              Logout
+            </Button>
+          </ScrollView>
+        </SafeAreaView>
+      );
+            }
 
 const styles = StyleSheet.create({
   container: {
@@ -146,7 +223,7 @@ const styles = StyleSheet.create({
   // ... other styles ...
 });
 
-export default DashboardScreen;
+export default DashboardScreen; */}
 
 
 // import React, { useState, useEffect } from 'react';
@@ -853,3 +930,223 @@ export default DashboardScreen;
 // // Include your StyleSheet here
 
 // export default DashboardScreen;
+
+import React, { useEffect, useState } from 'react';
+import { StyleSheet, ScrollView, SafeAreaView, TouchableOpacity, View, Text } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import { Avatar, Card, Button, List, Appbar } from 'react-native-paper';
+import { AccessToken, LoginManager } from 'react-native-fbsdk-next';
+import auth from '@react-native-firebase/auth';
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+
+const DashboardScreen = () => {
+  const navigation = useNavigation();
+  const [userProfile, setUserProfile] = useState({ name: '', email: '' });
+
+  useEffect(() => {
+    const unsubscribe = auth().onAuthStateChanged((user) => {
+      if (user) {
+        setUserProfile({
+          name: user.displayName || 'No Name',
+          email: user.email || 'No Email',
+        });
+      } else {
+        setUserProfile({ name: '', email: '' });
+      }
+    });
+
+    return unsubscribe; // Return the unsubscribe function to clean up
+  }, []);
+
+  const handleLogout = async () => {
+    try {
+      await auth().signOut(); // Use auth().signOut()
+      navigation.reset({
+        index: 0,
+        routes: [{ name: 'Home' }],
+      });
+    } catch (error) {
+      console.error('Error signing out:', error);
+    }
+  };
+
+  const handleSocialMediaConnect = (platform) => {
+    if (platform === 'Facebook') {
+      LoginManager.logInWithPermissions(['public_profile']).then(
+        function (result) {
+          if (result.isCancelled) {
+            console.log("Login cancelled");
+          } else {
+            AccessToken.getCurrentAccessToken().then(
+              (data) => {
+                // Assuming you have a separate screen to handle Facebook data
+                navigation.navigate('FacebookConnect', { accessToken: data.accessToken });
+              }
+            );
+          }
+        },
+        function (error) {
+          console.log("Login fail with error: " + error);
+        }
+      );
+    } else if (platform === 'Twitter') {
+      // Navigate to TwitterConnectScreen
+      navigation.navigate('TwitterConnect');
+    }
+  };
+
+  const handleProfilePress = () => {
+    console.log("Profile Button Pressed");
+    navigation.navigate('ProfileSettings');
+  };
+
+  return (
+    <SafeAreaView style={styles.container}>
+      <Appbar.Header style={styles.appbar}>
+        <Appbar.Content style={styles.appbarTitle} />
+        <TouchableOpacity onPress={handleProfilePress} style={styles.profileSettingsContainer}>
+      <Avatar.Icon
+        size={40}
+        icon="account-circle"
+        style={styles.profileIcon}
+      />
+      <Text style={styles.settingsText}></Text>
+    </TouchableOpacity>
+      </Appbar.Header>
+
+      <ScrollView style={styles.content}>
+        {userProfile && (
+          <Card style={styles.card}>
+            <Card.Title
+              title="User Profile"
+              left={(props) => (
+                <Avatar.Icon
+                  {...props}
+                  icon="account"
+                  style={{ backgroundColor: '#3868D9' }}
+                  color="#99b7ff"
+                />
+              )}
+            />
+            <Card.Content>
+            <View style={styles.userInfo}>
+          <View style={styles.userDetail}>
+            <FontAwesome5 name="user" size={20} color="#3868D9" style={styles.icon} />
+            <Text style={styles.userName}>{userProfile.name}</Text>
+          </View>
+
+          <View style={styles.userDetail}>
+            <FontAwesome5 name="envelope" size={20} color="#3868D9" style={styles.icon} />
+            <Text style={styles.userEmail}>{userProfile.email}</Text>
+          </View>
+        </View>
+            </Card.Content>
+          </Card>
+        )}
+
+        <Card style={styles.card}>
+          <Card.Title title="Connect to Social Media" />
+          <Card.Content>
+            <TouchableOpacity onPress={() => handleSocialMediaConnect('Facebook')}>
+              <List.Item
+                title="Connect to Facebook"
+                left={() => <List.Icon color="#4267B2" icon="facebook" />}
+              />
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => handleSocialMediaConnect('Twitter')}>
+              <List.Item
+                title="Connect to Twitter"
+                left={() => <List.Icon color="#1DA1F2" icon="twitter" />}
+              />
+            </TouchableOpacity>
+          </Card.Content>
+        </Card>
+
+        <Button icon="logout" mode="contained" onPress={handleLogout} style={styles.button} color="#eef9f0">
+          Logout
+        </Button>
+      </ScrollView>
+    </SafeAreaView>
+  );
+};
+
+const styles = StyleSheet.create({
+  userDetail: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 10, // Adjust the space between each detail as necessary
+  },
+  icon: {
+    marginRight: 10, // Adjust the space between the icon and the text as necessary
+  },
+  rightContainer: {
+    flex: 1,
+    flexDirection: 'row',
+  },
+  profileSettingsContainer: {
+    flexDirection: 'row',
+    alignItems: 'flex-end',
+    
+  },
+  settingsText: {
+    fontWeight: 'bold',
+    fontSize: 12,
+    alignContent:'center',
+  },
+  profileIcon: {
+    backgroundColor: '#3868D9',
+    // Removed color style since it's not affecting the icon itself
+  },
+  userName: {
+    fontWeight: "bold",
+    padding: "5%",
+    fontSize: 20,
+  },
+  
+  userEmail: {
+    fontSize: 15,
+    marginLeft: 15
+  },
+  container: {
+    flex: 1,
+    backgroundColor: '#ffffff',
+  },
+  settingsText:{
+    fontWeight: "bold",
+    fontSize: 12,
+    paddingRight: 5,
+  },
+  appbar: {
+    backgroundColor: '#ffffff',
+    marginRight: 300,
+    elevation: 0,
+  },
+  appbarTitle: {
+    color: '#3868D9',
+    fontWeight: 'bold',
+  },
+  profileIcon: {
+    backgroundColor: '#3868D9',
+    color: '#3868D9',
+    marginRight: 20,
+  },
+  content: {
+    padding: 20,
+  },
+  card: {
+    backgroundColor: '#d4e0fc',
+    marginVertical: 15,
+    padding: 10,
+    borderRadius: 18,
+    shadowColor: "black",
+  },
+  button: {
+    backgroundColor: '#3868D9',
+    borderRadius: 25,
+    marginVertical: 10,
+    paddingVertical: 10,
+    elevation: 4,
+  },
+});
+
+export default DashboardScreen;
