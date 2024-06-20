@@ -1,47 +1,74 @@
 // App.js
 import React from 'react';
-import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import {NavigationContainer} from '@react-navigation/native';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import HomeScreen from './HomeScreen'; // Adjust the import statement
-import RegisterScreen from  './RegisterScreen';
+import RegisterScreen from './RegisterScreen';
 import DashboardScreen from './DashboardScreen';
 import TwitterConnectScreen from './TwitterConnectScreen';
-import MainDrawerNavigator from './MainDrawerNavigator';
+import ResultsScreen from './ResultsScreen';
 import FacebookConnectScreen from './FacebookConnectScreen';
 import FbContentMonitoringScreen from './FbContentMonitoringScreen';
 import ProfileSettings from './ProfileSettings';
+import PersonalityTraitsScreen from './PersonalityTraitsScreen';
+import ContentMonitoringScreen from './ContentMonitoringScreen';
+import BullyingStatisticsScreen from './BullyingStatisticsScreen';
 import ForgotPassword from './ForgotPassword';
-
-
+import {UserProvider} from './userContext';
+import UserSentimentsScreen from './UserSentimentsScreen';
+import FriendsScreen from './FriendsScreen';
+import FollowingListVisualizations from './FollowingListVisualizations';
 
 const Stack = createNativeStackNavigator();
 
 const App = () => {
   return (
-    <NavigationContainer>
-      <Stack.Navigator initialRouteName="Home">
-        <Stack.Screen name="Home" component={HomeScreen} />
-        <Stack.Screen name="Register" component={RegisterScreen} />
-        <Stack.Screen name="Dashboard" component={DashboardScreen} />
-        <Stack.Screen name="TwitterConnect" component={TwitterConnectScreen} />
-        <Stack.Screen name="FacebookConnect" component={FacebookConnectScreen} />
-        <Stack.Screen name="Content" component={FbContentMonitoringScreen} />
-        <Stack.Screen name="ProfileSettings" component={ProfileSettings} />
-        <Stack.Screen name="ForgotPassword" component={ForgotPassword} />
-
-        <Stack.Screen
-          name="ResultsDrawer" // This is the name used to navigate to the drawer navigator from the stack navigator
-          component={MainDrawerNavigator} // The component we created earlier
-          options={{ headerShown: false }} // Optional: Hide the stack header because the drawer navigator has its own
-        />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <UserProvider>
+      <NavigationContainer>
+        <Stack.Navigator initialRouteName="Home">
+          <Stack.Screen name="Home" component={HomeScreen} />
+          <Stack.Screen name="Register" component={RegisterScreen} />
+          <Stack.Screen name="Dashboard" component={DashboardScreen} />
+          <Stack.Screen name="Result Screen" component={ResultsScreen} />
+          <Stack.Screen
+            name="TwitterConnect"
+            component={TwitterConnectScreen}
+          />
+          <Stack.Screen
+            name="FacebookConnect"
+            component={FacebookConnectScreen}
+          />
+          <Stack.Screen name="Content" component={FbContentMonitoringScreen} />
+          <Stack.Screen name="ProfileSettings" component={ProfileSettings} />
+          <Stack.Screen name="ForgotPassword" component={ForgotPassword} />
+          <Stack.Screen
+            name="Personality Trait Analysis"
+            component={PersonalityTraitsScreen}
+          />
+          <Stack.Screen
+            name="Content Monitoring"
+            component={ContentMonitoringScreen}
+          />
+          <Stack.Screen
+            name="Bullying and Harassment"
+            component={BullyingStatisticsScreen}
+          />
+          <Stack.Screen
+            name="Sentiments Screen"
+            component={UserSentimentsScreen}
+          />
+          <Stack.Screen name="Friends Screen" component={FriendsScreen} />
+          <Stack.Screen
+            name="Following Results"
+            component={FollowingListVisualizations}
+          />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </UserProvider>
   );
 };
 
 export default App;
-
-
 
 // import React, { useEffect } from 'react';
 // import { View, Text, TouchableOpacity } from 'react-native';
@@ -147,10 +174,10 @@ export default App;
 //   async function onTwitterButtonPress() {
 //     // Perform the login request
 //     const { authToken, authTokenSecret } = await RNTwitterSignIn.logIn();
-  
+
 //     // Create a Twitter credential with the tokens
 //     const twitterCredential = auth.TwitterAuthProvider.credential(authToken, authTokenSecret);
-  
+
 //     // Sign-in the user with the credential
 //     return auth().signInWithCredential(twitterCredential);
 //   }
@@ -193,12 +220,12 @@ export default App;
 //   async function onTwitterButtonPress() {
 //     try {
 //       const loginData = await RNTwitterSignIn.logIn();
-      
+
 //       if (loginData) {
 //         const { authToken, authTokenSecret } = loginData;
 //         const twitterCredential = auth.TwitterAuthProvider.credential(authToken, authTokenSecret);
 //         const userCredential = await auth().signInWithCredential(twitterCredential);
-        
+
 //         setUser(userCredential.user);
 //       }
 //     } catch (error) {
@@ -372,4 +399,3 @@ export default App;
 // });
 
 // export default MyComponent;
-

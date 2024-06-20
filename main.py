@@ -1,335 +1,94 @@
-# from fastapi import FastAPI
-# from pydantic import BaseModel
-# from transformers import BertTokenizer, BertForSequenceClassification
-# import torch
-# import numpy as np
-# from typing import List
-# from fastapi.middleware.cors import CORSMiddleware
-
-# app = FastAPI()
-
-# allowed_origins = [
-#     "http://localhost:8000",  # Allows requests from localhost:8000
-#     "http://192.168.0.105:8000",  # Replace with your machine's local network IP and port
-#     # Add other origins as needed
-# ]
-
-# app.add_middleware(
-#     CORSMiddleware,
-#     allow_origins=allowed_origins,
-#     allow_credentials=True,
-#     allow_methods=["*"],  # Allows all methods
-#     allow_headers=["*"],  # Allows all headers
-# )
-
-
-
-# # Define the number of labels (adjust this according to your original model)
-# num_labels = 3  # For example, if you have a binary classification model
-
-# # Define the model architecture
-# model = BertForSequenceClassification.from_pretrained('bert-base-uncased', num_labels=num_labels)
-
-# # Load the pre-trained weights
-# model.load_state_dict(torch.load('C:\\Users\\HP\\Downloads\\bert_hatespeech_model_state_dict.pth', map_location=torch.device('cpu')))
-
-
-# # Set the model to evaluation mode
-# model.eval()
-
-# # Move the model to the CPU
-# model = model.to(torch.device('cpu'))
-
-# # Load the tokenizer
-# tokenizer = BertTokenizer.from_pretrained('bert-base-uncased')
-
-# class InputData(BaseModel):
-#     comments: List[str]
-
-
-# @app.get("/")
-# def read_root():
-#     return {"message": "Hello World"}
-
-# # Define the predict endpoint
-
-# @app.post("/predict")
-# def predict(data: InputData):
-#     comments = data.comments
-
-#     # Initialize counters
-#     totals = {"hatespeech": 0, "offensive": 0, "neither": 0}
-
-#     for comment in comments:
-#         inputs = tokenizer(comment, return_tensors="pt", truncation=True)
-#         with torch.no_grad():
-#             outputs = model(**inputs)
-
-#         probs = torch.nn.functional.softmax(outputs.logits, dim=-1)
-#         predicted_class_index = torch.argmax(probs).item()
-#         labels = ["hatespeech", "offensive", "neither"]
-#         predicted_label = labels[predicted_class_index]
-
-#         # Increment the appropriate counter based on predicted label
-#         if predicted_label in totals:
-#             totals[predicted_label] += 1
-
-#     # Calculate total comments
-#     total_comments = sum(totals.values())
-
-#     return {
-#         "total_comments": total_comments,
-#         "hatespeech_comments": totals["hatespeech"],
-#         "offensive_comments": totals["offensive"],
-#         "neither_comments": totals["neither"]
-#     }
-
-# from fastapi import FastAPI, HTTPException
-# from pydantic import BaseModel
-# import torch
-# from transformers import BertForSequenceClassification, BertTokenizer
-# from typing import List
-# from fastapi.middleware.cors import CORSMiddleware
-
-# app = FastAPI()
-
-# # CORS middleware setup
-# allowed_origins = [
-#     "http://localhost:8000",
-#     "http://192.168.0.105:8000",
-#     # Add other origins as needed
-# ]
-# app.add_middleware(
-#     CORSMiddleware,
-#     allow_origins=allowed_origins,
-#     allow_credentials=True,
-#     allow_methods=["*"],
-#     allow_headers=["*"],
-# )
-
-# # Input data model
-# class InputData(BaseModel):
-#     comments: List[str]
-
-# # Model paths
-# racism_model_path = 'C:\\Users\\HP\\Downloads\\bert_racism_model'
-# hatespeech_model_path = 'C:\\Users\\HP\\Downloads\\bert_hatespeech_model_state_dict.pth'
-# sexism_model_path = 'C:\\Users\\HP\\Downloads\\bert_sexism_model'  # Adjust with the actual path
-
-# # Loading models and tokenizer
-# racism_model = BertForSequenceClassification.from_pretrained(racism_model_path, num_labels=2, local_files_only=True)
-# hatespeech_model = BertForSequenceClassification.from_pretrained('bert-base-uncased', num_labels=3)
-# hatespeech_model.load_state_dict(torch.load(hatespeech_model_path, map_location=torch.device('cpu')))
-# sexism_model = BertForSequenceClassification.from_pretrained(sexism_model_path, local_files_only=True)  # Load sexism model
-
-# tokenizer = BertTokenizer.from_pretrained('bert-base-uncased')
-# device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-# racism_model.to(device)
-# hatespeech_model.to(device)
-# sexism_model.to(device)  # Ensure sexism model is moved to the appropriate device
-
-# # Prediction functions
-# def predict_category(comment: str, model) -> int:
-#     encoded_comment = tokenizer.encode_plus(
-#         comment,
-#         add_special_tokens=True,
-#         max_length=256,
-#         return_tensors='pt',
-#         padding='max_length',
-#         truncation=True
-#     ).to(device)
-    
-#     with torch.no_grad():
-#         outputs = model(**encoded_comment)
-#     predicted_class = torch.argmax(outputs.logits, dim=1).item()
-#     return predicted_class
-
-# @app.get("/")
-# def read_root():
-#     return {"message": "Hello World"}
-
-# @app.post("/PredictComments/")
-# async def predict_comments(data: InputData):
-#     comments = data.comments
-#     results = {"total_comments": len(comments), "hatespeech": 0, "offensive": 0, "racist": 0, "sexist": 0}
-
-#     for comment in comments:
-#         # Racism prediction
-#         if predict_category(comment, racism_model) == 1:
-#             results["racist"] += 1
-#         # Hate speech prediction
-#         hatespeech_category = predict_category(comment, hatespeech_model)
-#         if hatespeech_category == 0:
-#             results["offensive"] += 1
-#         elif hatespeech_category == 1:
-#             results["hatespeech"] += 1
-#         # Sexism prediction
-#         if predict_category(comment, sexism_model) == 1:
-#             results["sexist"] += 1
-
-#     return results
-
-# from fastapi import FastAPI, HTTPException
-# from pydantic import BaseModel
-# from typing import List
-# from fastapi.middleware.cors import CORSMiddleware
-# import torch
-# from transformers import BertForSequenceClassification, BertTokenizer
-
-# app = FastAPI()
-
-# # CORS middleware setup for cross-origin requests
-# app.add_middleware(
-#     CORSMiddleware,
-#     allow_origins=["http://localhost:8000", "http://192.168.0.105:8000"],  # Add other origins as needed
-#     allow_credentials=True,
-#     allow_methods=["*"],
-#     allow_headers=["*"],
-# )
-
-# # Input data model for a list of comments
-# class InputData(BaseModel):
-#     comments: List[str]
-
-# # Define your model paths
-# racism_model_path = 'C:\\Users\\HP\\Downloads\\bert_racism_model'
-# hatespeech_model_path = 'C:\\Users\\HP\\Downloads\\bert_hatespeech_model_state_dict.pth'
-# sexism_model_path = 'C:\\Users\\HP\\Downloads\\bert_sexism_model'
-
-# # Initialize the tokenizer
-# tokenizer = BertTokenizer.from_pretrained('bert-base-uncased')
-
-# # Specify the computing device
-# device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-
-# # Load the Racism Model
-# racism_model = BertForSequenceClassification.from_pretrained(racism_model_path, num_labels=2)
-# racism_model = racism_model.to(device)
-
-# Load the Hate Speech Model
-# hatespeech_model = BertForSequenceClassification.from_pretrained('bert-base-uncased', num_labels=3)
-# hatespeech_model.load_state_dict(torch.load(hatespeech_model_path, map_location=device))
-# hatespeech_model = hatespeech_model.to(device)
-
-# Load the Sexism Model
-# sexism_model = BertForSequenceClassification.from_pretrained(sexism_model_path, num_labels=2)
-# sexism_model = sexism_model.to(device)
-
-# # Prediction function
-# def predict_category(comment: str, model) -> int:
-#     encoded_comment = tokenizer.encode_plus(
-#         comment,
-#         add_special_tokens=True,
-#         max_length=256,
-#         return_tensors='pt',
-#         padding='max_length',
-#         truncation=True,
-#     )
-#     encoded_comment = {k: v.to(device) for k, v in encoded_comment.items()}
-#     with torch.no_grad():
-#         outputs = model(**encoded_comment)
-#     predicted_class = torch.argmax(outputs.logits, dim=1).item()
-#     return predicted_class
-
-# @app.get("/")
-# def read_root():
-#     return {"message": "Service is running"}
-
-# @app.post("/predict/racism/")
-# async def predict_racism(data: InputData):
-#     total_comments = len(data.comments)
-#     racist_comments = sum(predict_category(comment, racism_model) == 1 for comment in data.comments)
-#     return {
-#         "Total Comments": total_comments,
-#         "Racist Comments": racist_comments,
-#         "Non-Racist Comments": total_comments - racist_comments,
-#     }
-
-
-# # @app.post("/predict/hatespeech/")
-# # async def predict_hatespeech(data: InputData):
-# #     total_comments = len(data.comments)
-# #     print("Hello how you doing")
-# #     results = {
-# #         "Total Comments": total_comments, 
-# #         "Offensive Comments": 0, 
-# #         "Hate Speech Comments": 0, 
-# #         "Neither": 0    
-# #     }
-    
-# #     for comment in data.comments:
-# #         prediction = predict_category(comment, hatespeech_model)
-# #         if prediction == 1:
-# #             results["Hate Speech Comments"] += 1
-# #         elif prediction == 2:
-# #             results["Offensive Comments"] += 1
-# #         else:
-# #             results["Neither"] += 1
-    
-# #     return results
-
-
-# @app.post("/predict/sexism/")
-# async def predict_sexism(data: InputData):
-#     total_comments = len(data.comments)
-#     sexist_comments = sum(predict_category(comment, sexism_model) == 1 for comment in data.comments)
-#     return {
-#         "Total Comments": total_comments,
-#         "Sexist Comments": sexist_comments,
-#         "Non-Sexist Comments": total_comments - sexist_comments,
-#     }
-
 
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 from typing import List
 from fastapi.middleware.cors import CORSMiddleware
 import torch
-from transformers import BertForSequenceClassification, BertTokenizer
+from transformers import BertForSequenceClassification, BertTokenizer, AutoTokenizer, AutoModelForSequenceClassification
+from scipy.special import softmax
+
 
 app = FastAPI()
 
 # CORS middleware setup for cross-origin requests
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:8000", "http://192.168.0.105:8000"],  # Add other origins as needed
+    allow_origins=["http://localhost:8000", "http://192.168.0.105:8000", "*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-# Input data model for a list of comments
 class InputData(BaseModel):
     comments: List[str]
 
- 
+class SentimentDetail(BaseModel):
+    comment: str
+    probabilities: dict
 
-# Define your model paths
-racism_model_path = 'C:\\Users\\HP\\Downloads\\bert_racism_model'
-hatespeech_model_path = 'C:\\Users\\HP\\Downloads\\bert_hatespeech_model_state_dict.pth' # Path for hate speech model
-sexism_model_path = 'C:\\Users\\HP\\Downloads\\bert_sexism_model'
+class SentimentResponse(BaseModel):
+    total_comments: int
+    positive: int
+    neutral: int
+    negative: int
+    details: List[SentimentDetail]
 
-# Initialize the tokenizer
-tokenizer = BertTokenizer.from_pretrained('bert-base-uncased')
+# Function to preprocess text (generic placeholder)
+def preprocess(text):
+    return text.replace("@user", "")
 
-# Specify the computing device
+# Sentiment Analysis Endpoint
+@app.post("/sentimentanalysis/")
+async def analyze_comments(data: InputData):
+    results = []
+    summary = {"total_comments": len(data.comments), "positive": 0, "neutral": 0, "negative": 0}
+    for comment in data.comments:
+        preprocessed_text = preprocess(comment)
+        encoded_input = sentiment_tokenizer(preprocessed_text, return_tensors='pt').to(device)
+        output = sentiment_model(**encoded_input)
+        probabilities = softmax(output.logits.detach().cpu().numpy()[0])
+        labels = ['negative', 'neutral', 'positive']  # Adjust based on your model's specific configuration
+        probabilities_dict = {labels[i]: float(probabilities[i]) for i in range(len(probabilities))}
+        results.append(SentimentDetail(comment=comment, probabilities=probabilities_dict))
+        max_label = max(probabilities_dict, key=probabilities_dict.get)
+        summary[f"{max_label}"] += 1
+
+    return SentimentResponse(
+        total_comments=summary["total_comments"],
+        positive=summary["positive"],
+        neutral=summary["neutral"],
+        negative=summary["negative"],
+        details=results
+    )
+
+
+# Model paths and token
+racism_model_path = 'E:\\Downloads\\bert_racism_model'
+hatespeech_model_path = 'E:Downloads\\bert_hatespeech_model_state_dict.pth'
+sexism_model_path = 'E:\\Downloads\\bert_sexism_model'
+model_id = "Nasserelsaman/microsoft-finetuned-personality"
+token = "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"
+sentiment_model_id = "cardiffnlp/twitter-roberta-base-sentiment-latest"
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-# Load the Racism Model
-racism_model = BertForSequenceClassification.from_pretrained(racism_model_path, num_labels=2)
-racism_model = racism_model.to(device)
+# Tokenizers and Models Initialization
+tokenizer_bert = BertTokenizer.from_pretrained('bert-base-uncased')
+tokenizer_auto = AutoTokenizer.from_pretrained(model_id, use_auth_token=token)
 
-# Load the Hate Speech Model
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
+sentiment_tokenizer = AutoTokenizer.from_pretrained(sentiment_model_id)
+sentiment_model = AutoModelForSequenceClassification.from_pretrained(sentiment_model_id).to(device)
+
+# Load Models
+racism_model = BertForSequenceClassification.from_pretrained(racism_model_path, num_labels=2).to(device)
 hatespeech_model = BertForSequenceClassification.from_pretrained('bert-base-uncased', num_labels=3)
 hatespeech_model.load_state_dict(torch.load(hatespeech_model_path, map_location=device))
 hatespeech_model = hatespeech_model.to(device)
+sexism_model = BertForSequenceClassification.from_pretrained(sexism_model_path, num_labels=2).to(device)
+personality_model = AutoModelForSequenceClassification.from_pretrained(model_id, use_auth_token=token).to(device)
 
-# Load the Sexism Model
-sexism_model = BertForSequenceClassification.from_pretrained(sexism_model_path, num_labels=2)
-sexism_model = sexism_model.to(device)
-
-# Prediction function, now parameterized to allow different models
-def predict_category(comment: str, model) -> int:
+def predict_category_with_comment(comment: str, model, tokenizer) -> dict:
     encoded_comment = tokenizer.encode_plus(
         comment,
         add_special_tokens=True,
@@ -342,7 +101,7 @@ def predict_category(comment: str, model) -> int:
     with torch.no_grad():
         outputs = model(**encoded_comment)
     predicted_class = torch.argmax(outputs.logits, dim=1).item()
-    return predicted_class
+    return {"comment": comment, "prediction": predicted_class}
 
 @app.get("/")
 def read_root():
@@ -350,33 +109,89 @@ def read_root():
 
 @app.post("/predict/racism/")
 async def predict_racism(data: InputData):
-    total_comments = len(data.comments)
-    racist_comments = sum(predict_category(comment, racism_model) == 1 for comment in data.comments)
+    predictions = [predict_category_with_comment(comment, racism_model, tokenizer_bert) for comment in data.comments]
+    detailed_predictions = []
+    for item in predictions:
+        label = "Racist" if item["prediction"] == 1 else "Not Racist"
+        detailed_predictions.append({"comment": item["comment"], "prediction": label})
+    racism_counts = {"Racist": 0, "Not Racist": 0}
+    for item in detailed_predictions:
+        racism_counts[item["prediction"]] += 1
     return {
-        "Total Comments": total_comments,
-        "Racist Comments": racist_comments,
-        "Non-Racist Comments": total_comments - racist_comments,
+        "Total Comments": len(data.comments),
+        "Racist Comments": racism_counts["Racist"],
+        "Non-Racist Comments": racism_counts["Not Racist"],
+        "Details": detailed_predictions,
     }
 
 @app.post("/predict/sexism/")
 async def predict_sexism(data: InputData):
-    total_comments = len(data.comments)
-    sexist_comments = sum(predict_category(comment, sexism_model) == 1 for comment in data.comments)
+    predictions = [predict_category_with_comment(comment, sexism_model, tokenizer_bert) for comment in data.comments]
+    detailed_predictions = []
+    for item in predictions:
+        label = "Sexist" if item["prediction"] == 1 else "Not Sexist"
+        detailed_predictions.append({"comment": item["comment"], "prediction": label})
+    sexism_counts = {"Sexist": 0, "Not Sexist": 0}
+    for item in detailed_predictions:
+        sexism_counts[item["prediction"]] += 1
     return {
-        "Total Comments": total_comments,
-        "Sexist Comments": sexist_comments,
-        "Non-Sexist Comments": total_comments - sexist_comments,
+        "Total Comments": len(data.comments),
+        "Sexist Comments": sexism_counts["Sexist"],
+        "Non-Sexist Comments": sexism_counts["Not Sexist"],
+        "Details": detailed_predictions,
     }
 
-@app.post("/predict/hatespeech")
+@app.post("/predict/hatespeech/")
 async def classify_comments(data: InputData):
-    results = {"Hate Speech Comments": 0, "Offensive Comments": 0, "Neither": 0}
-    for comments in data.comments:
-        predicted_class = predict_category(comments, hatespeech_model)
-        if predicted_class == 0:
-            results["Hate Speech Comments"] += 1
-        elif predicted_class == 1:
-            results["Offensive Comments"] += 1
-        elif predicted_class == 2:
-            results["Neither"] += 1
+    predictions = [predict_category_with_comment(comment, hatespeech_model, tokenizer_bert) for comment in data.comments]
+    detailed_predictions = []
+    for item in predictions:
+        if item["prediction"] == 0:
+            label = "Hate Speech"
+        elif item["prediction"] == 1:
+            label = "Offensive"
+        else:
+            label = "Neither"
+        detailed_predictions.append({"comment": item["comment"], "prediction": label})
+    hate_speech_counts = {"Hate Speech": 0, "Offensive": 0, "Neither": 0}
+    for item in detailed_predictions:
+        hate_speech_counts[item["prediction"]] += 1
+    return {
+        "Total Comments": len(data.comments),
+        "Hate Speech Comments": hate_speech_counts["Hate Speech"],
+        "Offensive Comments": hate_speech_counts["Offensive"],
+        "Neither": hate_speech_counts["Neither"],
+        "Details": detailed_predictions,
+    }
+
+# Personality traits prediction endpoint
+@app.post("/personalitytraits/")
+async def predict_personality_traits(data: InputData):
+    results = personality_detection(data.comments)
+    trait_counts = {trait: 0 for trait in ['Agreeableness', 'Conscientiousness', 'Extraversion', 'Neuroticism', 'Openness']}
+    for result in results.values():
+        for trait, score in result.items():
+            if score >= 0.5:  # Dominant trait threshold
+                trait_counts[trait] += 1
+    return {
+        "Total Comments": len(data.comments),
+        "Agreeableness": trait_counts['Agreeableness'],
+        "Conscientiousness": trait_counts['Conscientiousness'],
+        "Extraversion": trait_counts['Extraversion'],
+        "Neuroticism": trait_counts['Neuroticism'],
+        "Openness": trait_counts['Openness'],
+        "Details": results
+    }
+
+def personality_detection(texts):
+    results = {}
+    for text in texts:
+        inputs = tokenizer_auto(text, truncation=True, padding=True, return_tensors="pt")
+        outputs = personality_model(**inputs)
+        predictions = torch.sigmoid(outputs.logits).squeeze().detach().numpy()
+        label_names = ['Agreeableness', 'Conscientiousness', 'Extraversion', 'Neuroticism', 'Openness']
+        result = {label_names[i]: float(predictions[i]) for i in range(len(label_names))}
+        results[text] = result
     return results
+
+

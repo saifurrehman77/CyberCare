@@ -9,7 +9,6 @@
 // import { db } from './firebase'; // Import db from your firebase.js
 // //import UserModel from './UserModel';
 
-
 // const RegisterScreen = ({ navigation }) => {
 //   const [email, setEmail] = useState('');
 //   const [password, setPassword] = useState('');
@@ -23,7 +22,6 @@
 //     try {
 //       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
 //       const user = userCredential.user;
-      
 
 //       const newUser = new UserModel(fullName, dob, country);
 
@@ -37,7 +35,6 @@
 //       Alert.alert("Signup Error", error.message);
 //     }
 //   };
-
 
 //   if (isSignedUp) {
 //     return <DashboardScreen />;
@@ -168,7 +165,6 @@
 
 // export default RegisterScreen;
 
-
 // import React, { useState } from 'react';
 // import { View, Text, TextInput, Button, Alert, StyleSheet, KeyboardAvoidingView, Platform } from 'react-native';
 // import auth from '@react-native-firebase/auth';
@@ -261,18 +257,25 @@
 
 // export default RegisterScreen;
 
-import React, { useState } from 'react';
-import { View, Image, KeyboardAvoidingView, Platform, StyleSheet, Alert } from 'react-native';
-import { TextInput, Button, Text } from 'react-native-paper';
+import React, {useState} from 'react';
+import {
+  View,
+  Image,
+  KeyboardAvoidingView,
+  Platform,
+  StyleSheet,
+  Alert,
+} from 'react-native';
+import {TextInput, Button, Text} from 'react-native-paper';
 // Import Firebase services
 import firestore from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
 
 // Assuming DashboardScreen and loginStyles are correctly imported
 import DashboardScreen from './DashboardScreen';
-import { loginStyles } from './HomeScreen';
+import {loginStyles} from './HomeScreen';
 
-const RegisterScreen = ({ navigation }) => {
+const RegisterScreen = ({navigation}) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [fullName, setFullName] = useState('');
@@ -282,12 +285,17 @@ const RegisterScreen = ({ navigation }) => {
 
   const handleSignup = async () => {
     try {
-      const userCredential = await auth().createUserWithEmailAndPassword(email, password);
+      const userCredential = await auth().createUserWithEmailAndPassword(
+        email,
+        password,
+      );
       const user = userCredential.user;
 
       // Assuming you have a UserModel class or similar logic for structuring user data
       const newUser = {
-        fullName, dob, country
+        fullName,
+        dob,
+        country,
       };
 
       // Storing additional user details in Firestore
@@ -297,7 +305,7 @@ const RegisterScreen = ({ navigation }) => {
       navigation.navigate('Dashboard'); // Navigate to Dashboard after successful signup
     } catch (error) {
       console.error('Error signing up:', error);
-      Alert.alert("Signup Error", error.message);
+      Alert.alert('Signup Error', error.message);
     }
   };
 
@@ -305,16 +313,10 @@ const RegisterScreen = ({ navigation }) => {
     return <DashboardScreen />;
   }
 
-
-
-
-
-
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      style={{ ...loginStyles.container, ...styles.container }}
-    >
+      style={{...loginStyles.container, ...styles.container}}>
       <View style={styles.logoContainer}>
         <Image source={require('./assets/logo.png')} style={styles.logo} />
       </View>
@@ -326,7 +328,7 @@ const RegisterScreen = ({ navigation }) => {
           onChangeText={setFullName}
           style={styles.input}
           underlineColor="#5E8D93"
-          theme={{ colors: { primary: '#5E8D93', underlineColor: 'transparent' } }}
+          theme={{colors: {primary: '#5E8D93', underlineColor: 'transparent'}}}
         />
         <TextInput
           label="Country"
@@ -335,7 +337,7 @@ const RegisterScreen = ({ navigation }) => {
           onChangeText={setCountry}
           style={styles.input}
           underlineColor="#5E8D93"
-          theme={{ colors: { primary: '#5E8D93', underlineColor: 'transparent' } }}
+          theme={{colors: {primary: '#5E8D93', underlineColor: 'transparent'}}}
         />
         <TextInput
           label="Date of Birth"
@@ -344,7 +346,7 @@ const RegisterScreen = ({ navigation }) => {
           onChangeText={setDob}
           style={styles.input}
           underlineColor="#5E8D93"
-          theme={{ colors: { primary: '#5E8D93', underlineColor: 'transparent' } }}
+          theme={{colors: {primary: '#5E8D93', underlineColor: 'transparent'}}}
         />
         <TextInput
           label="Email"
@@ -354,7 +356,7 @@ const RegisterScreen = ({ navigation }) => {
           style={styles.input}
           keyboardType="email-address"
           underlineColor="#5E8D93"
-          theme={{ colors: { primary: '#5E8D93', underlineColor: 'transparent' } }}
+          theme={{colors: {primary: '#5E8D93', underlineColor: 'transparent'}}}
         />
         <TextInput
           label="Password"
@@ -364,17 +366,18 @@ const RegisterScreen = ({ navigation }) => {
           secureTextEntry
           style={styles.input}
           underlineColor="#5E8D93"
-          theme={{ colors: { primary: '#3868D9', underlineColor: 'transparent' } }}
+          theme={{colors: {primary: '#3868D9', underlineColor: 'transparent'}}}
         />
         <Button
           mode="contained"
           onPress={handleSignup}
           style={styles.button}
-          labelStyle={styles.buttonLabel}
-        >
+          labelStyle={styles.buttonLabel}>
           Sign Up
         </Button>
-        <Text style={styles.switchText} onPress={() => navigation.navigate('Login')}>
+        <Text
+          style={styles.switchText}
+          onPress={() => navigation.navigate('Login')}>
           Already have an account? Login
         </Text>
       </View>
@@ -394,8 +397,8 @@ const styles = StyleSheet.create({
   },
   logo: {
     marginTop: -120,
-    width: '100%',
-    height: '100%',
+    width: '80%',
+    height: '80%',
     resizeMode: 'contain',
   },
   formContainer: {
@@ -434,4 +437,3 @@ const styles = StyleSheet.create({
 });
 
 export default RegisterScreen;
-

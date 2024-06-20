@@ -1,6 +1,6 @@
 // import React, { useState, useEffect } from 'react';
 // import {
-//   TextInput, View, StyleSheet, Image, TouchableOpacity, Text, 
+//   TextInput, View, StyleSheet, Image, TouchableOpacity, Text,
 //   KeyboardAvoidingView, Platform, Alert
 // } from 'react-native';
 // import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
@@ -39,7 +39,6 @@
 //     }
 //   };
 
-
 //   if (isLoggedIn) {
 //     return <DashboardScreen />;
 //   }
@@ -69,7 +68,6 @@
 //         <TouchableOpacity onPress={handleEmailLogin} style={styles.button}>
 //           <Text style={styles.buttonText}>Sign In</Text>
 //         </TouchableOpacity>
-
 
 //          <TouchableOpacity onPress={connectWithGoogle} style={styles.googleButton}>
 //           <Text style={styles.buttonText}>Connect with Google</Text>
@@ -338,7 +336,6 @@
 //   );
 // };
 
-
 // const styles = StyleSheet.create({
 //   container: {
 //     flex: 1,
@@ -496,7 +493,6 @@
 
 // export default HomeScreen
 
-
 // import React, { useState, useEffect } from 'react';
 // import { View, Image, StyleSheet, Alert } from 'react-native';
 // import { TextInput, Text} from 'react-native-paper';
@@ -508,7 +504,6 @@
 // import fbDataScreen from './FacebookData';
 // import { Button } from 'react-native-elements';
 // //import Icon from 'react-native-vector-icons/MaterialIcons';
-
 
 // const HomeScreen = ({ navigation }) => {
 //   const [email, setEmail] = useState('');
@@ -553,11 +548,11 @@
 //         <Image source={require('./assets/logo.png')} style={styles.logo} />
 //       </View>
 //       <View style={styles.formContainer}>
-//         <TextInput 
-//           label="Email" 
-//           value={email} 
-//           onChangeText={text => setEmail(text)} 
-//           style={styles.input} 
+//         <TextInput
+//           label="Email"
+//           value={email}
+//           onChangeText={text => setEmail(text)}
+//           style={styles.input}
 //         />
 //         <TextInput
 //           label="Password"
@@ -662,7 +657,6 @@
 //   },
 // });
 
-
 // export const loginStyles = {
 //   container: {
 //     flex: 1,
@@ -738,29 +732,27 @@
 //   }
 // }
 
-
 // export default HomeScreen;
 
-
-
-import React, { useState, useEffect } from 'react';
-import { View, Image, StyleSheet, Alert } from 'react-native';
-import { TextInput, Button, Text } from 'react-native-paper';
-import { GoogleSignin } from '@react-native-google-signin/google-signin';
+import React, {useState, useEffect} from 'react';
+import {View, Image, StyleSheet, Alert} from 'react-native';
+import {TextInput, Button, Text} from 'react-native-paper';
+import {GoogleSignin} from '@react-native-google-signin/google-signin';
 import auth from '@react-native-firebase/auth';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import DashboardScreen from './DashboardScreen';
 import fbDataScreen from './FacebookData';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 
-const HomeScreen = ({ navigation }) => {
+const HomeScreen = ({navigation}) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
     GoogleSignin.configure({
-      webClientId: '75712864116-96qe3fdkqs6d0m9s93qbnvu4fjsbuka0.apps.googleusercontent.com',
+      webClientId:
+        '75712864116-96qe3fdkqs6d0m9s93qbnvu4fjsbuka0.apps.googleusercontent.com',
     });
   }, []);
 
@@ -776,7 +768,7 @@ const HomeScreen = ({ navigation }) => {
   const connectWithGoogle = async () => {
     try {
       await GoogleSignin.hasPlayServices();
-      const { idToken } = await GoogleSignin.signIn();
+      const {idToken} = await GoogleSignin.signIn();
       const googleCredential = auth.GoogleAuthProvider.credential(idToken);
       await auth().signInWithCredential(googleCredential);
       setIsLoggedIn(true);
@@ -787,7 +779,7 @@ const HomeScreen = ({ navigation }) => {
 
   if (isLoggedIn) {
     // Navigate to DashboardScreen or show DashboardScreen component here
-    return <DashboardScreen />
+    return <DashboardScreen />;
   }
 
   return (
@@ -796,40 +788,53 @@ const HomeScreen = ({ navigation }) => {
         <Image source={require('./assets/logo.png')} style={styles.logo} />
       </View>
       <View style={styles.formContainer}>
-      <View style={styles.inputContainer}>
-        <FontAwesome5 name="envelope" size={20} color="#3868D9" style={styles.icon} />
-        <TextInput
-          label="Email"
-          value={email}
-          onChangeText={text => setEmail(text)}
-          style={styles.input}
-        />
-      </View>
+        <View style={styles.inputContainer}>
+          <FontAwesome5
+            name="envelope"
+            size={20}
+            color="#3868D9"
+            style={styles.icon}
+          />
+          <TextInput
+            label="Email"
+            value={email}
+            onChangeText={text => setEmail(text)}
+            style={styles.input}
+          />
+        </View>
 
-      <View style={styles.inputContainer}>
-        <FontAwesome5 name="key" size={20} color="#3868D9" style={styles.icon} />
-        <TextInput
-          label="Password"
-          value={password}
-          onChangeText={text => setPassword(text)}
-          secureTextEntry
-          style={styles.input}
-        />
-      </View>
+        <View style={styles.inputContainer}>
+          <FontAwesome5
+            name="key"
+            size={20}
+            color="#3868D9"
+            style={styles.icon}
+          />
+          <TextInput
+            label="Password"
+            value={password}
+            onChangeText={text => setPassword(text)}
+            secureTextEntry
+            style={styles.input}
+          />
+        </View>
 
-      <Button mode="contained" style={styles.button} onPress={handleEmailLogin}>
-        
+        <Button
+          mode="contained"
+          style={styles.button}
+          onPress={handleEmailLogin}>
           <Text style={styles.buttonLabel}>Login</Text>
         </Button>
         <Text
           style={styles.forgotPassword}
-          onPress={() => navigation.navigate('ForgotPassword')}
-        >
+          onPress={() => navigation.navigate('ForgotPassword')}>
           Forgot password?
         </Text>
         <View style={styles.signupPrompt}>
           <Text style={styles.signupText}>Don't have an account? </Text>
-          <Text style={styles.signupLink} onPress={() => navigation.navigate('Register')}>
+          <Text
+            style={styles.signupLink}
+            onPress={() => navigation.navigate('Register')}>
             Register
           </Text>
         </View>
@@ -837,8 +842,7 @@ const HomeScreen = ({ navigation }) => {
           mode="contained"
           icon={() => <Icon name="google" size={24} color="white" />} // Display the Google icon
           style={styles.googleButton}
-          onPress={connectWithGoogle}
-        >
+          onPress={connectWithGoogle}>
           Connect with Google
         </Button>
       </View>
@@ -850,9 +854,8 @@ const styles = StyleSheet.create({
   inputContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    
   },
- 
+
   container: {
     flex: 1,
     backgroundColor: '#ffffff',
@@ -864,10 +867,10 @@ const styles = StyleSheet.create({
     marginTop: 60,
   },
   logo: {
-    width: '125%', // Adjust width as needed
-    height: '125%', // Adjust height as needed
+    width: '90%', // Adjust width as needed
+    height: '90%', // Adjust height as needed
     resizeMode: 'contain',
-    marginBottom: "30%"
+    marginBottom: '10%',
   },
   formContainer: {
     flex: 3,
@@ -875,15 +878,14 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   input: {
-    flex:1,
+    flex: 1,
     backgroundColor: 'transparent',
     height: 58,
     marginBottom: 16,
     fontSize: 16,
-    color: "#3868D9",
+    color: '#3868D9',
     paddingLeft: 20,
     marginTop: 13,
-
   },
   button: {
     borderRadius: 50,
@@ -902,8 +904,8 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     fontSize: 18,
     lineHeight: 26,
-    color: "white",
-    fontWeight: "bold"
+    color: 'white',
+    fontWeight: 'bold',
   },
   forgotPassword: {
     marginTop: 12,
@@ -931,7 +933,6 @@ const styles = StyleSheet.create({
     marginTop: 12,
   },
 });
-
 
 export const loginStyles = {
   container: {
@@ -966,7 +967,7 @@ export const loginStyles = {
     height: 58,
     marginBottom: 16,
     fontSize: 16,
-    color: "#dc5933"
+    color: '#dc5933',
   },
   button: {
     borderRadius: 50,
@@ -1006,8 +1007,7 @@ export const loginStyles = {
     fontWeight: '700',
     fontSize: 16,
     textDecorationLine: 'underline',
-  }
-}
-
+  },
+};
 
 export default HomeScreen;
